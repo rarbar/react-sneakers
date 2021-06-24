@@ -1,6 +1,7 @@
 import {Card} from "./Components/Card/Card";
 import {Header} from "./Components/Header/Header";
 import {Drawer} from "./Components/Drawer/Drawer";
+import {logDOM} from "@testing-library/react";
 
 
 const arr = [
@@ -40,12 +41,14 @@ function App() {
                     </div>
                 </div>
                 <div className="Sneakers">
-
-                    {arr.map((obj) => <Card
-                        title={obj.title}
-                        price={obj.price}
-                        imgUrl={obj.imgUrl}
-                    />)}
+                    {arr.map((obj) => (
+                        <Card
+                            imgUrl={obj.imgUrl}
+                            price={obj.price}
+                            title={obj.title}
+                            onFavorite={()=>console.log(1)}
+                            onPlus={()=>console.log(2)}
+                        />))}
                 </div>
             </div>
         </div>

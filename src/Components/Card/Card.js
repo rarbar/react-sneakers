@@ -1,13 +1,18 @@
 import s from './Card.module.scss';
+import {useState} from "react";
 
 
 export function Card(props) {
 
-    const onClickBtn=()=>alert(props.price)
+const[isAdd,setIsAdd]=useState(false)
+
+    const onClickPlus=()=>{
+        setIsAdd(!isAdd)
+    }
 
     return (
         <div className={s.card}>
-            <div className={s.favorite}>
+            <div className={s.favorite} onClick={props.onFavorite}>
                 <img src={"img/heard_liked.svg"} alt="heart"/>
             </div>
             <img
@@ -22,14 +27,10 @@ export function Card(props) {
                     <span>цена</span>
                     <b>{props.price}</b>
                 </div>
-                <button  className={s.button}
-                         onClick={onClickBtn}>
-                    <img
-                        width={11}
-                        height={11}
-                        src={"/img/plus.svg"}
-                        alt="plus"/>
-                </button>
+                <img className={s.plus}
+                     src={isAdd?"/img/but-green.svg":"/img/plus.svg"}
+                     alt="plus"
+                     onClick={onClickPlus}/>
             </div>
         </div>
     )
