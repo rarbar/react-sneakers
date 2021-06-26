@@ -1,46 +1,36 @@
 
 
 
-export function Drawer() {
+export function Drawer({onClose,items=[],onRemove,id}) {
     return (
-        <div className='overlay'>
+        <div className='overlay' >
             <div className='drawer'>
                 <h2>Корзина
-                    <img className='removeBtn'
+                    <img
+                        className='removeBtn'
                          src={"img/Btn_remove.svg"}
-                         alt="remove"/>
+                         alt="remove"
+                        onClick={onClose}
+                    />
                 </h2>
                 <div className='items'>
-                    <div className='cartItem'>
-
-                        <img className='sneakers_remove'
-                             width={70}
-                             height={70}
-                             src={"img/sneakers/1.jpg"}
-                             alt="sneakers"/>
-                        <div className='names'>
-                            <p>Мужские Кроссовки Nike Air Max 270</p>
-                            <b>121212</b>
+                    {items.map(obj=>(
+                        <div key={obj.id}
+                            className='cartItem'>
+                            <img className='sneakers_remove'
+                                 src={obj.imgUrl}
+                                 alt="sneakers"/>
+                            <div className='names'>
+                                <p>{obj.title}</p>
+                                <b>{obj.price}</b>
+                            </div>
+                            <img className='removeBtn'
+                                 src={"img/Btn_remove.svg"}
+                                 alt="remove"
+                                onClick={() => {onRemove(id)}}
+                            />
                         </div>
-                        <img className='removeBtn'
-                             src={"img/Btn_remove.svg"}
-                             alt="remove"/>
-                    </div>
-                    <div className='cartItem'>
-
-                        <img className='sneakers_remove'
-                             width={70}
-                             height={70}
-                             src={"img/sneakers/1.jpg"}
-                             alt="sneakers"/>
-                        <div className='names'>
-                            <p>Мужские Кроссовки Nike Air Max 270</p>
-                            <b>121212</b>
-                        </div>
-                        <img className='removeBtn'
-                             src={"img/Btn_remove.svg"}
-                             alt="remove"/>
-                    </div>
+                    ))}
                 </div>
                 <div className='totalBlock'>
                     <ul>

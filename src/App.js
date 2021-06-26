@@ -1,37 +1,67 @@
 import {Card} from "./Components/Card/Card";
 import {Header} from "./Components/Header/Header";
 import {Drawer} from "./Components/Drawer/Drawer";
-import {logDOM} from "@testing-library/react";
+import {useEffect, useState} from "react";
+
+// const arr = [
+//     // {
+//     //     "title": "Мужские Кроссовки Nike Blazer Mid Suede",
+//     //     "price": 12300,
+//     //     "imgUrl": "img/sneakers/1.jpg"
+//     // },
+//     // {
+//     //     "title": "Мужские Кроссовки Nike Air Max 270",
+//     //     "price": 12000,
+//     //     "imgUrl": "img/sneakers/2.jpg"
+//     // },
+//     // {
+//     //     "title": "Мужские Кроссовки Nike Blazer Mid Suede",
+//     //     "price": 12100,
+//     //     "imgUrl": "img/sneakers/3.jpg"
+//     // },
+//     // {
+//     //     "title": "Кроссовки Puma X Aka Boku Future Rider",
+//     //     "price": 89000,
+//     //     "imgUrl": "img/sneakers/4.jpg"
+//     // }
+// ]
+
+function App(props) {
+    const [items, setItems] = useState([])
+    const [cartItems, setCartItems] = useState([])
+    const [cartOpened, setCartOpened] = useState(false)
 
 
-const arr = [
-    {
-        title: 'Мужские Кроссовки Nike Blazer Mid Suede',
-        price: '12 300',
-        imgUrl: 'img/sneakers/1.jpg'
-    },
-    {
-        title: 'Мужские Кроссовки Nike Air Max 270',
-        price: '12 000',
-        imgUrl: 'img/sneakers/2.jpg'
-    },
-    {
-        title: 'Мужские Кроссовки Nike Blazer Mid Suede',
-        price: '12 100',
-        imgUrl: 'img/sneakers/3.jpg'
-    },
-    {
-        title: 'Кроссовки Puma X Aka Boku Future Rider',
-        price: '89 000',
-        imgUrl: 'img/sneakers/4.jpg'
-    },
-]
+    //useEffect отрисовывает нам один раз массив и запинает его и следит за ним если он изменится он перерисует
+    useEffect(() =>
+        fetch('https://60d6d8a1307c300017a5f527.mockapi.io/items')
+            .then((res) => {
+                return res.json()
+            }).then((json) => {
+            setItems(json)
+        }), [])
+    //вытаскиваем данные с back end
+    //отправил запрос на этот адрес .log(Network XHR)можно посмотреть
+    //только promise res обещай мне вернуть его в .json формате
+    const onAddToCard = (obj) => {
+        setCartItems(prev=>[...prev,obj])
+    }
+    const onRemoveCard = (id) => {
+        setCartItems(cartItems.filter(tl => tl.id !== id))
+    }
 
-function App() {
+
     return (
         <div className='wrapper'>
-            <Drawer/>
-            <Header/>
+            {cartOpened && <Drawer
+                items={cartItems}
+                onClose={() => setCartOpened(false)}
+                onRemove={onRemoveCard}
+            />}
+            {/*если cartOpened true то отображаем*/}
+
+            <Header onClickCard={() => setCartOpened(true)}/>
+
             <div className="content">
                 <div className='search_top'>
                     <h1>All sneakers</h1>
@@ -41,13 +71,14 @@ function App() {
                     </div>
                 </div>
                 <div className="Sneakers">
-                    {arr.map((obj) => (
+                    {items.map((item) => (
                         <Card
-                            imgUrl={obj.imgUrl}
-                            price={obj.price}
-                            title={obj.title}
-                            onFavorite={()=>console.log(1)}
-                            onPlus={()=>console.log(2)}
+                            key={item.id}
+                            imgUrl={item.imgUrl}
+                            price={item.price}
+                            title={item.title}
+                            onFavorite={() => console.log(1)}
+                            onPlus={(obg)=>onAddToCard(obg)}
                         />))}
                 </div>
             </div>
