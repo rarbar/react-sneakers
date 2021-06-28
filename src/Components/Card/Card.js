@@ -1,20 +1,23 @@
 import s from './Card.module.scss';
 import {useState} from "react";
 
+export function Card({onAddFavorites, imgUrl, price, title, onPlus, id, favorited = false}) {
 
-export function Card({onFavorite, imgUrl, price,title,onPlus}) {
+    const [isAdd, setIsAdd] = useState(false)
+    const [isFavorite, setIsFavorite] = useState(favorited)
 
-const[isAdd,setIsAdd]=useState(false)
-
-    const onClickPlus=()=>{
-         onPlus({imgUrl, price,title});
+    const onClickPlus = () => {
+        onPlus({id, imgUrl, price, title});
         setIsAdd(!isAdd);
     }
-
+    const onClickFavorite = () => {
+        onAddFavorites({id, imgUrl, price, title})
+        setIsFavorite(!isFavorite);
+    }
     return (
         <div className={s.card}>
-            <div className={s.favorite} onClick={onFavorite}>
-                <img src={"img/heard_liked.svg"} alt="heart"/>
+            <div className={s.favorite} onClick={onClickFavorite}>
+                <img src={isFavorite ? "img/heard_liked.svg" : "img/unLike.svg"} alt="heart"/>
             </div>
             <img
                 width='133'
@@ -29,7 +32,7 @@ const[isAdd,setIsAdd]=useState(false)
                     <b>{price}</b>
                 </div>
                 <img className={s.plus}
-                     src={isAdd?"/img/but-green.svg":"/img/plus.svg"}
+                     src={isAdd ? "/img/but-green.svg" : "/img/plus.svg"}
                      alt="plus"
                      onClick={onClickPlus}/>
             </div>

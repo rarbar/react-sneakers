@@ -43,6 +43,43 @@ body {
     background-color: rgba(0, 0, 0, 0.1);
     z-index: 1;
     display: flex; //скрыли правый слайд display: none;
+    .greenButton {
+      width: 100%;
+      height: 55px;
+      background: #9DD558;
+      border-radius: 18px;
+      border: 0;
+      color: #FFFFFF;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+
+      &:hover {
+        background: lighten(#9DD558, 5%); // будет светлеть при нажатии
+      }
+
+      &:active {
+        background: darken(#9DD558, 5%); // будет темнеть при нажатии
+      }
+    }
+    .greenButton {
+      position: relative;
+
+
+      &:hover {
+        img {
+          transform: translateX(5px);
+        }
+      }
+
+      img {
+        position: absolute;
+        right: 30px;
+        top: 20px;
+        transition: transform 0.15s ease-in-out;
+      }
+    }
   }
 
   .drawer {
@@ -55,11 +92,6 @@ body {
     background: #FFFFFF;
     box-shadow: -10px 4px 24px rgba(0, 0, 0, 0.1);
     padding: 30px;
-
-    .items {
-      overflow: auto;
-      margin-bottom: 40px;
-    }
 
     h2 {
       display: flex;
@@ -77,9 +109,27 @@ body {
         }
       }
     }
+    .cartEmpty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
 
+      .empty {
+        margin-bottom: 20px;
+        width: 120px;
+        height: 120px;
+      }
+
+      p {
+        opacity: 6;
+      }
+
+    }
     .items {
       flex: 1;
+      overflow: auto;
+      margin-bottom: 40px;
     }
 
     .cartItem {
@@ -104,8 +154,8 @@ body {
       }
 
       .sneakers_remove {
-        width:70px;
-        height:70px;
+        width: 70px;
+        height: 70px;
         margin-right: 20px;
       }
 
@@ -139,45 +189,6 @@ body {
         align-items: flex-end;
         margin-bottom: 20px;
       }
-
-      .greenButton {
-        position: relative;
-
-
-        &:hover {
-          img {
-            transform: translateX(5px);
-          }
-        }
-
-        img {
-          position: absolute;
-          right: 30px;
-          top: 20px;
-          transition: transform 0.15s ease-in-out;
-        }
-      }
-
-      .greenButton {
-        width: 100%;
-        height: 55px;
-        background: #9DD558;
-        border-radius: 18px;
-        border: 0;
-        color: #FFFFFF;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background 0.2s ease-in-out;
-
-        &:hover {
-          background: lighten(#9DD558, 5%); // будет светлеть при нажатии
-        }
-
-        &:active {
-          background: darken(#9DD558, 5%); // будет темнеть при нажатии
-        }
-      }
     }
   }
 
@@ -191,6 +202,7 @@ body {
     .headerLeft {
       display: flex;
       align-items: center;
+      position: relative;
 
       img {
         margin-right: 15px;
@@ -227,6 +239,14 @@ body {
       align-items: center;
       justify-content: space-between;
       margin-bottom: 40px;
+      position: relative;
+
+      .clear {
+        position: absolute;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+      }
     }
 
     .search_block {
@@ -238,7 +258,7 @@ body {
 
     .Sneakers {
       display: flex;
-      flex-wrap:wrap ;
+      flex-wrap: wrap;
     }
 
     input {
@@ -248,6 +268,11 @@ body {
       width: 200px;
     }
   }
+}
+
+.favorites{
+  display: flex;
+  flex-wrap: wrap;
 }
 
 
