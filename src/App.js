@@ -1,11 +1,13 @@
 import {Header} from "./Components/Header/Header";
 import {Drawer} from "./Components/Drawer/Drawer";
-import {useEffect, useState} from "react";
+import {createContext, useEffect, useState} from "react";
 import axios from "axios";
 import {Home} from './pages/Home'
 import {Route} from "react-router-dom";
 import {Favorites} from "./pages/Favorites";
 
+
+export const AppContext=createContext({})
 
 function App() {
     const [items, setItems] = useState([])
@@ -13,23 +15,38 @@ function App() {
     const [favorites, setFavorites] = useState([])
     const [searchValue, setSearchValue] = useState('')
     const [cartOpened, setCartOpened] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
 
     //useEffect отрисовывает нам один раз массив и запинает его и следит за ним если он изменится он перерисует
-    useEffect(() => {
-        axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/items').then((res) => {
-            setItems(res.data)
-        })//get запрос при получении чегото
-        axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/card').then((res) => {
-            setCartItems(res.data)
-        })
-        axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/favorites').then((res) => {
-            setFavorites(res.data)
-        })//get запрос в корзину при получении чегото
+    useEffect(() => {   //useEffect никогда нельзя делать async поэтому мы помещяем в нее F которую делаем async
+        async function fetchData() {
+
+            const cartResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/card')
+            const favoritesResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/favorites')
+            const itemsResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/items')
+
+            setIsLoading(false)//что бы у нас когда все прогрузилось карточки серые затерлись
+
+            setCartItems(cartResponse.data)//сначало загружаются корзина
+            setFavorites(favoritesResponse.data)//потом закладки
+            setItems(itemsResponse.data)//а последними главная стр
+        }
+        fetchData()
     }, [])
+
     const onAddToCard = (obj) => {
-        axios.post('https://60d6d8a1307c300017a5f527.mockapi.io/card', obj) //по ссылки передай мне этот  obj
-        setCartItems((prev) => [...prev, obj])
+        try {
+            if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
+                axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${obj.id}`) //по ссылки передай мне этот  obj
+                setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
+            } else {
+                axios.post('https://60d6d8a1307c300017a5f527.mockapi.io/card', obj) //по ссылки передай мне этот  obj
+                setCartItems((prev) => [...prev, obj])
+            }
+        } catch (error) {
+            alert('Не удалось добавить')
+        }
     }
     //post запрос при получении чегото
     const onRemoveItems = (id) => {
@@ -39,6 +56,7 @@ function App() {
     }
 
     const onAddFavorites = async (obj) => {
+
         //функция у нас ассинхронная и дожидаюсь там ответа где нам необходимо
         try {
             if (favorites.find((favObj) => favObj.id === obj.id)) {
@@ -58,6 +76,8 @@ function App() {
     }
 
     return (
+       // помести В AppContext items, cartItems, favorites
+        <AppContext.Provider value={{items, cartItems, favorites}}>
         <div className='wrapper'>
             {cartOpened && <Drawer
                 onRemove={onRemoveItems}
@@ -69,20 +89,23 @@ function App() {
             <Route path='/' exact>
                 <Home
                     items={items}
+                    cartItems={cartItems}
                     searchValue={searchValue}
                     setSearchValue={setSearchValue}
                     onAddFavorites={onAddFavorites}
                     onAddToCard={onAddToCard}
                     onChangeSearchInput={onChangeSearchInput}
+                    isLoading={isLoading}
                 />
             </Route>
             <Route path='/favorites' exact>
                 <Favorites
-                    items={favorites}
+
                     onAddFavorites={onAddFavorites}
                 />
             </Route>
         </div>
+        </AppContext.Provider>
     );
 }
 
