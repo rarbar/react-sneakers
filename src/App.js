@@ -7,7 +7,7 @@ import {Route} from "react-router-dom";
 import {Favorites} from "./pages/Favorites";
 
 
-export const AppContext=createContext({})
+export const AppContext = createContext({})
 
 function App() {
     const [items, setItems] = useState([])
@@ -32,6 +32,7 @@ function App() {
             setFavorites(favoritesResponse.data)//потом закладки
             setItems(itemsResponse.data)//а последними главная стр
         }
+
         fetchData()
     }, [])
 
@@ -41,7 +42,7 @@ function App() {
                 axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${obj.id}`) //по ссылки передай мне этот  obj
                 setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
             } else {
-                axios.post('https://60d6d8a1307c300017a5f527.mockapi.io/card', obj) //по ссылки передай мне этот  obj
+                axios.post('https://60d6d8a1307c300017a5f527.mockapi.io/card/', obj) //по ссылки передай мне этот  obj
                 setCartItems((prev) => [...prev, obj])
             }
         } catch (error) {
@@ -54,14 +55,12 @@ function App() {
         setCartItems((prev) => prev.filter((item) => item.id !== id))// фильтруем если приходит id=3 то новый массив будет без id=3
         // console.log(id)
     }
-
     const onAddFavorites = async (obj) => {
-
         //функция у нас ассинхронная и дожидаюсь там ответа где нам необходимо
         try {
             if (favorites.find((favObj) => favObj.id === obj.id)) {
                 axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/favorites/${obj.id}`)
-                // setFavorites((prev) => prev.filter((item) => item.id !== obj.id))
+                setFavorites((prev) => prev.filter((item) => item.id !== obj.id))
             } else {
                 const {data} = await axios.post(`https://60d6d8a1307c300017a5f527.mockapi.io/favorites`, obj)
                 //await дождись ответа сверху и перемести в переменную resp
@@ -74,37 +73,39 @@ function App() {
     const onChangeSearchInput = (e) => {
         setSearchValue(e.target.value)
     }
+    //если хотябы один id есть в корзине, выдовай мне true
+    const isItemAdded = (id) => {
+        return cartItems.some(obj => Number(obj.id) === Number(id))
+    }
 
     return (
-       // помести В AppContext items, cartItems, favorites
-        <AppContext.Provider value={{items, cartItems, favorites}}>
-        <div className='wrapper'>
-            {cartOpened && <Drawer
-                onRemove={onRemoveItems}
-                items={cartItems}
-                onClose={() => setCartOpened(false)}
-            />}
-            {/*если cartOpened true то отображаем*/}
-            <Header onClickCard={() => setCartOpened(true)}/>
-            <Route path='/' exact>
-                <Home
-                    items={items}
-                    cartItems={cartItems}
-                    searchValue={searchValue}
-                    setSearchValue={setSearchValue}
-                    onAddFavorites={onAddFavorites}
-                    onAddToCard={onAddToCard}
-                    onChangeSearchInput={onChangeSearchInput}
-                    isLoading={isLoading}
-                />
-            </Route>
-            <Route path='/favorites' exact>
-                <Favorites
-
-                    onAddFavorites={onAddFavorites}
-                />
-            </Route>
-        </div>
+        // помести В AppContext items, cartItems, favorites
+        <AppContext.Provider
+            value={{items, cartItems, favorites, onAddFavorites, isItemAdded, setCartOpened, setCartItems}}>
+            <div className='wrapper'>
+                {cartOpened && <Drawer
+                    onRemove={onRemoveItems}
+                    items={cartItems}
+                    onClose={() => setCartOpened(false)}
+                />}
+                {/*если cartOpened true то отображаем*/}
+                <Header onClickCard={() => setCartOpened(true)}/>
+                <Route path='/' exact>
+                    <Home
+                        items={items}
+                        cartItems={cartItems}
+                        searchValue={searchValue}
+                        setSearchValue={setSearchValue}
+                        onAddFavorites={onAddFavorites}
+                        onAddToCard={onAddToCard}
+                        onChangeSearchInput={onChangeSearchInput}
+                        isLoading={isLoading}
+                    />
+                </Route>
+                <Route path='/favorites' exact>
+                    <Favorites/>
+                </Route>
+            </div>
         </AppContext.Provider>
     );
 }

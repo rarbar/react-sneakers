@@ -3,9 +3,9 @@ import {Card} from "../Components/Card/Card";
 import {useContext} from "react";
 import {AppContext} from "../App";
 
-export function Favorites({ onAddFavorites}) {
+export function Favorites() {
 
-    const {favorites}=useContext(AppContext) //favorites вытаскиваю из AppContext
+    const {favorites, onAddFavorites}=useContext(AppContext) //favorites вытаскиваю из AppContext
 
     return (
         <div className="content">

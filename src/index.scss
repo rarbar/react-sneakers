@@ -43,6 +43,7 @@ body {
     background-color: rgba(0, 0, 0, 0.1);
     z-index: 1;
     display: flex; //скрыли правый слайд display: none;
+
     .greenButton {
       width: 100%;
       height: 55px;
@@ -66,7 +67,10 @@ body {
     .greenButton {
       position: relative;
 
-
+      &:disabled{
+        background-color: #eae6e6;
+        cursor: default!important;
+      }
       &:hover {
         img {
           transform: translateX(5px);
@@ -114,10 +118,11 @@ body {
       align-items: center;
       justify-content: center;
       flex-direction: column;
+      position: relative;
+      top: 150px;
 
       .empty {
         margin-bottom: 20px;
-        width: 120px;
         height: 120px;
       }
 

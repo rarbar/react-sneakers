@@ -4,7 +4,9 @@ export function Header(props) {
     return (
         <header>
             <div className='headerLeft'>
-                <img width='40' height='40' src={"/img/logo.png"} alt="logo"/>
+                <Link to='/'>
+                    <img width='40' height='40' src={"/img/logo.png"} alt="logo"/>
+                </Link>
                 <div className='headerInfo'>
                     <h3>React sneakers</h3>
                     <p>Магазин </p>

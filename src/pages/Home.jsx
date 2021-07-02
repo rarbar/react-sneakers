@@ -1,27 +1,34 @@
+import React from 'react'
 import {Card} from "../Components/Card/Card";
 
-export function Home({cartItems, items, searchValue, setSearchValue, onAddFavorites, onAddToCard, onChangeSearchInput, isLoading})
 
-{
+export function Home({   items,
+                         searchValue,
+                         setSearchValue,
+                         onAddFavorites,
+                         onAddToCard,
+                         onChangeSearchInput,
+                         isLoading
+                     }) {
     const renderItems = () => {
         const filterItems = items.filter((item) =>
             //фильтруем по названию // название в нижний регистр // содержит ли масив(элемент)
             item.title.toLowerCase().includes(searchValue.toLowerCase())
         )
         //если isLoading(true) ты мы создадим массив из 10 (undefined)
-        return (isLoading ? [...Array(8)] : filterItems).map((item) => (
-                    <Card
-                        // key={item.id}
-                        // id={item.id}
-                        // imgUrl={item.imgUrl}
-                        // price={item.price}
-                        // title={item.title}
-                        {...item}
-                        added={cartItems.some(obj => Number(obj.id) === Number(item.id))}
-                        onFavorites={onAddFavorites}
-                        onPlus={(obj) => onAddToCard(obj)}
-                        loading={isLoading}
-                    />))
+        return (isLoading ? [...Array(8)] : filterItems).map((item,index) => (
+            <Card
+                key={index}
+                // id={item.id}
+                // imgUrl={item.imgUrl}
+                // price={item.price}
+                // title={item.title}
+                {...item}
+                // added={isItemAdded(item && item.id)}
+                onFavorites={onAddFavorites}
+                onPlus={(obj) => onAddToCard(obj)}
+                loading={isLoading}
+            />))
     }
     return (
         <div className="content">
