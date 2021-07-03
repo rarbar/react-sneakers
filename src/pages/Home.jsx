@@ -40,10 +40,10 @@ export function Home({   items,
                     onClick={() => {
                         setSearchValue('')
                     }}
-                    src={"img/Btn_remove.svg"}
+                    src={"../../img/Btn_remove.svg"}
                     alt="remove"/>}
                 <div className='search_block'>
-                    <img src={"img/search.svg"} alt="Search"/>
+                    <img src={"../../img/search.svg"} alt="Search"/>
                     <input
                         value={searchValue}
                         onChange={onChangeSearchInput}

@@ -43,7 +43,7 @@ export function Card({
                     <rect x="118" y="223" rx="10" ry="10" width="32" height="32"/>
                 </ContentLoader> : <>
                     <div className={s.favorite} onClick={onClickFavorite}>
-                        <img src={isFavorite ? "img/heard_liked.svg" : "img/unLike.svg"} alt="heart"/>
+                        <img src={isFavorite ? "../../img/heard_liked.svg" : "../../img/unLike.svg"} alt="heart"/>
                     </div>
                     <img
                         width='100%'
@@ -57,7 +57,7 @@ export function Card({
                             <b>{price}</b>
                         </div>
                         <img className={s.plus}
-                             src={isItemAdded(id) ? "/img/but-green.svg" : "/img/plus.svg"}
+                             src={isItemAdded(id) ? "../../img/but-green.svg" : "../../img/plus.svg"}
                              alt="plus"
                              onClick={onClickPlus}/>
                     </div>
