@@ -13,13 +13,10 @@ export function Favorites() {
                 <h1>Мои закладки</h1>
             </div>
             <div className="favorites">
-                {favorites.map((item) => (
+                {favorites.map((item,index) => (
                     <Card
-                        key={item.id}
-                        id={item.id}
-                        imgUrl={item.imgUrl}
-                        price={item.price}
-                        title={item.title}
+                        key={index}
+                        {...item}
                         favorited={true}
                         onFavorites={onAddFavorites}
                     />))}

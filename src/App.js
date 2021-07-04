@@ -21,16 +21,19 @@ function App() {
     //useEffect отрисовывает нам один раз массив и запинает его и следит за ним если он изменится он перерисует
     useEffect(() => {   //useEffect никогда нельзя делать async поэтому мы помещяем в нее F которую делаем async
         async function fetchData() {
+            try {
+                const cartResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/card')
+                const favoritesResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/favorites')
+                const itemsResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/items')
 
-            const cartResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/card')
-            const favoritesResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/favorites')
-            const itemsResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/items')
+                setIsLoading(false)//что бы у нас когда все прогрузилось карточки серые затерлись
 
-            setIsLoading(false)//что бы у нас когда все прогрузилось карточки серые затерлись
-
-            setCartItems(cartResponse.data)//сначало загружаются корзина
-            setFavorites(favoritesResponse.data)//потом закладки
-            setItems(itemsResponse.data)//а последними главная стр
+                setCartItems(cartResponse.data)//сначало загружаются корзина
+                setFavorites(favoritesResponse.data)//потом закладки
+                setItems(itemsResponse.data)//а последними главная стр
+            } catch (error) {
+                alert('Ошибка при запросе данных.')
+            }
         }
 
         fetchData()
@@ -51,16 +54,19 @@ function App() {
     }
     //post запрос при получении чегото
     const onRemoveItems = (id) => {
-        axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${id}`) //по ссылки передай мне этот  obj
-        setCartItems((prev) => prev.filter((item) => item.id !== id))// фильтруем если приходит id=3 то новый массив будет без id=3
-        // console.log(id)
+        try {
+            axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${id}`) //по ссылки передай мне этот  obj
+            setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(id)))// фильтруем если приходит id=3 то новый массив будет без id=3
+        } catch (error) {
+            alert('Ошибка при удалении из корзины :(')
+        }
     }
     const onAddFavorites = async (obj) => {
         //функция у нас ассинхронная и дожидаюсь там ответа где нам необходимо
         try {
-            if (favorites.find((favObj) => favObj.id === obj.id)) {
+            if (favorites.find((favObj) => Number(favObj.id) === Number(obj.id))) {
                 axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/favorites/${obj.id}`)
-                setFavorites((prev) => prev.filter((item) => item.id !== obj.id))
+                setFavorites((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)))
             } else {
                 const {data} = await axios.post(`https://60d6d8a1307c300017a5f527.mockapi.io/favorites`, obj)
                 //await дождись ответа сверху и перемести в переменную resp
@@ -71,7 +77,8 @@ function App() {
         }// если что то в коде сломается отлови эту ошибку и предупреди нас из за async
     }
     const onChangeSearchInput = (e) => {
-        setSearchValue(e.target.value)
+        let text = e.currentTarget.value
+        setSearchValue(text)
     }
     //если хотябы один id есть в корзине, выдовай мне true
     const isItemAdded = (id) => {
@@ -81,7 +88,15 @@ function App() {
     return (
         // помести В AppContext items, cartItems, favorites
         <AppContext.Provider
-            value={{items, cartItems, favorites, onAddFavorites, isItemAdded, setCartOpened, setCartItems}}>
+            value={{
+                items,
+                cartItems,
+                favorites,
+                onAddFavorites,
+                isItemAdded,
+                setCartOpened,
+                setCartItems
+            }}>
             <div className='wrapper'>
                 {cartOpened && <Drawer
                     onRemove={onRemoveItems}

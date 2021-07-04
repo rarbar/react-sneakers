@@ -1,6 +1,7 @@
 import React from 'react'
 import {Card} from "../Components/Card/Card";
-
+import btnRemove from "../img/btnRemove.svg"
+import search from "../img/search.svg"
 
 export function Home({   items,
                          searchValue,
@@ -16,7 +17,7 @@ export function Home({   items,
             item.title.toLowerCase().includes(searchValue.toLowerCase())
         )
         //если isLoading(true) ты мы создадим массив из 10 (undefined)
-        return (isLoading ? [...Array(8)] : filterItems).map((item,index) => (
+        return (isLoading ? [...Array(5)] : filterItems).map((item,index) => (
             <Card
                 key={index}
                 // id={item.id}
@@ -24,7 +25,6 @@ export function Home({   items,
                 // price={item.price}
                 // title={item.title}
                 {...item}
-                // added={isItemAdded(item && item.id)}
                 onFavorites={onAddFavorites}
                 onPlus={(obj) => onAddToCard(obj)}
                 loading={isLoading}
@@ -40,10 +40,10 @@ export function Home({   items,
                     onClick={() => {
                         setSearchValue('')
                     }}
-                    src={"../../img/Btn_remove.svg"}
+                    src={btnRemove}
                     alt="remove"/>}
                 <div className='search_block'>
-                    <img src={"../../img/search.svg"} alt="Search"/>
+                    <img src={search} alt="Search"/>
                     <input
                         value={searchValue}
                         onChange={onChangeSearchInput}

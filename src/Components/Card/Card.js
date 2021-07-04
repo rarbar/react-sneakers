@@ -3,6 +3,10 @@ import s from './Card.module.scss';
 import {useState} from "react";
 import ContentLoader from "react-content-loader"
 import {AppContext} from "../../App";
+import heard_liked  from '../../img/heard_liked.svg'
+import unLike  from "../../img/unLike.svg"
+import butGreen  from "../../img/butGreen.svg"
+import plus  from "../../img/plus.svg"
 
 export function Card({
                          id,
@@ -26,7 +30,6 @@ export function Card({
     }
     return (
         <div className={s.card}>
-
             {loading ?
                 <ContentLoader
                     speed={2}
@@ -43,7 +46,7 @@ export function Card({
                     <rect x="118" y="223" rx="10" ry="10" width="32" height="32"/>
                 </ContentLoader> : <>
                     <div className={s.favorite} onClick={onClickFavorite}>
-                        <img src={isFavorite ? "../../img/heard_liked.svg" : "../../img/unLike.svg"} alt="heart"/>
+                        <img src={isFavorite ? heard_liked : unLike} alt="heart"/>
                     </div>
                     <img
                         width='100%'
@@ -57,7 +60,7 @@ export function Card({
                             <b>{price}</b>
                         </div>
                         <img className={s.plus}
-                             src={isItemAdded(id) ? "../../img/but-green.svg" : "../../img/plus.svg"}
+                             src={isItemAdded(id) ? butGreen : plus}
                              alt="plus"
                              onClick={onClickPlus}/>
                     </div>
