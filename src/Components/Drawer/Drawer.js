@@ -18,6 +18,7 @@ export function Drawer({onClose, items = [], onRemove}) {
     const [isLoading, setIsLoading] = useState(false)
 
     const {setCartItems, cartItems} = useContext(AppContext)
+    const totalPrice = cartItems.reduce((sum, obj) => obj.price + sum, 0)
 
     const onClickOrder = async () => {
         try {
@@ -73,14 +74,14 @@ export function Drawer({onClose, items = [], onRemove}) {
                     <div className='totalBlock'>
                         <ul>
                             <li>
-                                <span> Итого</span>
+                                <span>Итого</span>
                                 <></>
-                                <b>21234 руб</b>
+                                <b>{totalPrice}</b>
                             </li>
                             <li>
-                                <span>Налое</span>
+                                <span>Налог</span>
                                 <></>
-                                <b> 2102 руб</b>
+                                <b> {totalPrice/100*5}</b>
                             </li>
                         </ul>
                         <button className='greenButton'

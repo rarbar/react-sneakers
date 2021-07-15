@@ -3,10 +3,10 @@ import s from './Card.module.scss';
 import {useState} from "react";
 import ContentLoader from "react-content-loader"
 import {AppContext} from "../../App";
-import heard_liked  from '../../img/heard_liked.svg'
-import unLike  from "../../img/unLike.svg"
-import butGreen  from "../../img/butGreen.svg"
-import plus  from "../../img/plus.svg"
+import heard_liked from '../../img/heard_liked.svg'
+import unLike from "../../img/unLike.svg"
+import butGreen from "../../img/butGreen.svg"
+import plus from "../../img/plus.svg"
 
 export function Card({
                          id,
@@ -45,24 +45,25 @@ export function Card({
                     <rect x="0" y="230" rx="5" ry="5" width="80" height="25"/>
                     <rect x="118" y="223" rx="10" ry="10" width="32" height="32"/>
                 </ContentLoader> : <>
-                    <div className={s.favorite} onClick={onClickFavorite}>
+                    {onFavorites && (<div className={s.favorite} onClick={onClickFavorite}>
                         <img src={isFavorite ? heard_liked : unLike} alt="heart"/>
-                    </div>
+                    </div>)}
                     <img
                         width='100%'
                         height='135'
-                        src={imgUrl}
+                        src={process.env.PUBLIC_URL + '/img/items/1.png'}//'/img/items/1.png'
                         alt="1"/>
+
                     <h5>{title}</h5>
                     <div className={s.cardButton}>
                         <div className={s.cardSale}>
                             <span>цена</span>
                             <b>{price}</b>
                         </div>
-                        <img className={s.plus}
-                             src={isItemAdded(id) ? butGreen : plus}
-                             alt="plus"
-                             onClick={onClickPlus}/>
+                        {onPlus && (<img className={s.plus}
+                                        src={isItemAdded(id) ? butGreen : plus}
+                                        alt="plus"
+                                        onClick={onClickPlus}/>)}
                     </div>
                 </>
             }

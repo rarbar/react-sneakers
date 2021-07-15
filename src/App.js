@@ -5,6 +5,7 @@ import axios from "axios";
 import {Home} from './pages/Home'
 import {Route} from "react-router-dom";
 import {Favorites} from "./pages/Favorites";
+import {Orders} from "./pages/Orders";
 
 
 export const AppContext = createContext({})
@@ -20,7 +21,7 @@ function App() {
 
     //useEffect отрисовывает нам один раз массив и запинает его и следит за ним если он изменится он перерисует
     useEffect(() => {   //useEffect никогда нельзя делать async поэтому мы помещяем в нее F которую делаем async
-        async function fetchData() {
+        (async ()=> {
             try {
                 const cartResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/card')
                 const favoritesResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/favorites')
@@ -34,9 +35,7 @@ function App() {
             } catch (error) {
                 alert('Ошибка при запросе данных.')
             }
-        }
-
-        fetchData()
+        })()
     }, [])
 
     const onAddToCard = (obj) => {
@@ -95,7 +94,8 @@ function App() {
                 onAddFavorites,
                 isItemAdded,
                 setCartOpened,
-                setCartItems
+                setCartItems,
+                onAddToCard,
             }}>
             <div className='wrapper'>
                 {cartOpened && <Drawer
@@ -119,6 +119,9 @@ function App() {
                 </Route>
                 <Route path='/favorites' exact>
                     <Favorites/>
+                </Route>
+                <Route path='/orders' exact>
+                    <Orders/>
                 </Route>
             </div>
         </AppContext.Provider>

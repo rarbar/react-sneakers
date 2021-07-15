@@ -3,8 +3,14 @@ import logo from '../../img/logos.png'
 import cart from "../../img/cart.svg"
 import heard from "../../img/Heard.svg"
 import user from "../../img/User.svg"
+import {AppContext} from "../../App";
+import {useContext} from "react";
 
 export function Header(props) {
+
+    const {cartItems} = useContext(AppContext)
+    const totalPrice = cartItems.reduce((sum, obj) => obj.price + sum, 0)
+
     return (
         <header>
 
@@ -21,7 +27,7 @@ export function Header(props) {
             <ul className='headerRight'>
                 <li onClick={props.onClickCard}>
                     <img width='18' height='18' src={cart} alt="logo"/>
-                    <span>1250 $</span>
+                    <span>{totalPrice}</span>
                 </li>
                 <li>
                     <Link to='/favorites'>
@@ -30,7 +36,9 @@ export function Header(props) {
 
                 </li>
                 <li>
-                    <img width='18' height='18' src={user} alt="logo"/>
+                    <Link to='/orders'>
+                        <img width='18' height='18' src={user} alt="logo"/>
+                    </Link>
                 </li>
             </ul>
 
