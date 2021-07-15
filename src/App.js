@@ -21,11 +21,14 @@ function App() {
 
     //useEffect отрисовывает нам один раз массив и запинает его и следит за ним если он изменится он перерисует
     useEffect(() => {   //useEffect никогда нельзя делать async поэтому мы помещяем в нее F которую делаем async
-        (async ()=> {
+        (async () => {
             try {
-                const cartResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/card')
-                const favoritesResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/favorites')
-                const itemsResponse = await axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/items')
+                //Promise.all не особо удобенн т.к. если хотя бы 1 promise не выполнится мы поподем сразу в catch
+                const [cartResponse, favoritesResponse, itemsResponse] = await Promise.all([
+                    axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/card'),
+                    axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/favorites'),
+                    axios.get('https://60d6d8a1307c300017a5f527.mockapi.io/items')
+                ])
 
                 setIsLoading(false)//что бы у нас когда все прогрузилось карточки серые затерлись
 
@@ -38,23 +41,23 @@ function App() {
         })()
     }, [])
 
-    const onAddToCard = (obj) => {
+    const onAddToCard = async (obj) => {
         try {
             if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
-                axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${obj.id}`) //по ссылки передай мне этот  obj
                 setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
+                await axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${obj.id}`) //по ссылки передай мне этот  obj
             } else {
-                axios.post('https://60d6d8a1307c300017a5f527.mockapi.io/card/', obj) //по ссылки передай мне этот  obj
                 setCartItems((prev) => [...prev, obj])
+                await axios.post('https://60d6d8a1307c300017a5f527.mockapi.io/card/', obj) //по ссылки передай мне этот  obj
             }
         } catch (error) {
             alert('Не удалось добавить')
         }
     }
     //post запрос при получении чегото
-    const onRemoveItems = (id) => {
+    const onRemoveItems = async (id) => {
         try {
-            axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${id}`) //по ссылки передай мне этот  obj
+            await axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${id}`) //по ссылки передай мне этот  obj
             setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(id)))// фильтруем если приходит id=3 то новый массив будет без id=3
         } catch (error) {
             alert('Ошибка при удалении из корзины :(')
@@ -64,7 +67,7 @@ function App() {
         //функция у нас ассинхронная и дожидаюсь там ответа где нам необходимо
         try {
             if (favorites.find((favObj) => Number(favObj.id) === Number(obj.id))) {
-                axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/favorites/${obj.id}`)
+                await axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/favorites/${obj.id}`)
                 setFavorites((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)))
             } else {
                 const {data} = await axios.post(`https://60d6d8a1307c300017a5f527.mockapi.io/favorites`, obj)
@@ -81,7 +84,7 @@ function App() {
     }
     //если хотябы один id есть в корзине, выдовай мне true
     const isItemAdded = (id) => {
-        return cartItems.some(obj => Number(obj.id) === Number(id))
+        return cartItems.some(obj => Number(obj.parentId) === Number(id))
     }
 
     return (

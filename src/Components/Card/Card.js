@@ -11,6 +11,7 @@ import plus from "../../img/plus.svg"
 
 export function Card({
                          id,
+                         parentId,
                          title,
                          imgUrl,
                          price,
@@ -21,12 +22,13 @@ export function Card({
                      }) {
     const {isItemAdded} = useContext(AppContext)
     const [isFavorite, setIsFavorite] = useState(favorited)
+    const objItem = {id,parentId:id, title, imgUrl, price}
 
     const onClickPlus = () => {
-        onPlus({id, title, imgUrl, price});
+        onPlus(objItem);
     }
     const onClickFavorite = () => {
-        onFavorites({id, title, imgUrl, price})
+        onFavorites(objItem)
         setIsFavorite(!isFavorite)
     }
 
@@ -63,9 +65,9 @@ export function Card({
                             <b>{price}</b>
                         </div>
                         {onPlus && (<img className={s.plus}
-                                        src={isItemAdded(id) ? butGreen : plus}
-                                        alt="plus"
-                                        onClick={onClickPlus}/>)}
+                                         src={isItemAdded(id) ? butGreen : plus}
+                                         alt="plus"
+                                         onClick={onClickPlus}/>)}
                     </div>
                 </>
             }
