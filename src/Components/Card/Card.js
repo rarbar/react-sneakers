@@ -8,6 +8,7 @@ import unLike from "../../img/unLike.svg"
 import butGreen from "../../img/butGreen.svg"
 import plus from "../../img/plus.svg"
 
+
 export function Card({
                          id,
                          title,
@@ -28,6 +29,7 @@ export function Card({
         onFavorites({id, title, imgUrl, price})
         setIsFavorite(!isFavorite)
     }
+
     return (
         <div className={s.card}>
             {loading ?
@@ -51,7 +53,7 @@ export function Card({
                     <img
                         width='100%'
                         height='135'
-                        src={process.env.PUBLIC_URL + '/img/items/1.png'}//'/img/items/1.png'
+                        src={imgUrl}
                         alt="1"/>
 
                     <h5>{title}</h5>
