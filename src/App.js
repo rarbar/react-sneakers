@@ -48,16 +48,16 @@ function App() {
                 await axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${obj.id}`) //по ссылки передай мне этот  obj
             } else {
                 setCartItems((prev) => [...prev, obj])
-                await axios.post('https://60d6d8a1307c300017a5f527.mockapi.io/card/', obj) //по ссылки передай мне этот  obj
+                await axios.post('https://60d6d8a1307c300017a5f527.mockapi.io/card', obj) //по ссылки передай мне этот  obj
             }
         } catch (error) {
             alert('Не удалось добавить')
         }
     }
     //post запрос при получении чегото
-    const onRemoveItems = async (id) => {
+    const onRemoveItems = (id) => {
         try {
-            await axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${id}`) //по ссылки передай мне этот  obj
+            axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${id}`) //по ссылки передай мне этот  id
             setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(id)))// фильтруем если приходит id=3 то новый массив будет без id=3
         } catch (error) {
             alert('Ошибка при удалении из корзины :(')
@@ -84,7 +84,7 @@ function App() {
     }
     //если хотябы один id есть в корзине, выдовай мне true
     const isItemAdded = (id) => {
-        return cartItems.some(obj => Number(obj.parentId) === Number(id))
+        return cartItems.some(obj => Number(obj.id) === Number(id))
     }
 
     return (

@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import logo from '../../img/logos.png'
-import cart from "../../img/cart.svg"
+import cart from "../../img/cart.png"
 import heard from "../../img/Heard.svg"
 import user from "../../img/User.svg"
 import {AppContext} from "../../App";

@@ -6,12 +6,12 @@ export function Info({title, img, description}) {
     const {setCartOpened} = useContext(AppContext)
     return (
         <div className='cartEmpty'>
-            <img className='empty' src={img} alt="garbich"/>
+            <img className='empty' src={img} alt="garbage"/>
             <h2>{title}</h2>
             <p> {description}</p>
             <button onClick={() => setCartOpened(false)} className='greenButton'>
                 вернуться назад
-                <img className='arow' src={arrow} alt="Arow"/>
+                <img className='arow' src={arrow} alt="Arrow"/>
             </button>
         </div>
     )

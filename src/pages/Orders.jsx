@@ -1,11 +1,10 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Card} from "../Components/Card/Card";
 import axios from "axios";
-import {AppContext} from "../App";
 
 
 export function Orders() {
-    const {onAddFavorites, onAddToCard} = useContext(AppContext)
+    // const {onAddFavorites, onAddToCard} = useContext(AppContext)
     const [orders, setOrders] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 //не можем в useEffect прописывать просто await, поэтому делаем самовызывающую f
@@ -31,10 +30,7 @@ export function Orders() {
                     <Card
                         key={index}
                         {...item}
-
-
                         loading={isLoading}
-
                     />))}
             </div>
         </div>
