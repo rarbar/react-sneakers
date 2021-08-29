@@ -43,12 +43,21 @@ function App() {
 
     const onAddToCard = async (obj) => {
         try {
-            if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
-                setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
+            const findItem = cartItems.find((item) => Number(item.parantID) === Number(obj.id))
+            if (findItem) {
+                setCartItems(prev => prev.filter(item => Number(item.parantID) !== Number(obj.id)))
                 await axios.delete(`https://60d6d8a1307c300017a5f527.mockapi.io/card/${obj.id}`) //по ссылки передай мне этот  obj
             } else {
                 setCartItems((prev) => [...prev, obj])
-                await axios.post('https://60d6d8a1307c300017a5f527.mockapi.io/card', obj) //по ссылки передай мне этот  obj
+                const {data} = await axios.post('https://60d6d8a1307c300017a5f527.mockapi.io/card', obj)
+                setCartItems(prev => prev.map((item) => {
+                    if (item.parentID === data.parentID) {
+                        return {
+                            ...item, id: data.id
+                        }
+                    }
+                    return item
+                }))
             }
         } catch (error) {
             alert('Не удалось добавить')
@@ -95,10 +104,10 @@ function App() {
                 cartItems,
                 favorites,
                 onAddFavorites,
+                onAddToCard,
                 isItemAdded,
                 setCartOpened,
                 setCartItems,
-                onAddToCard,
             }}>
             <div className='wrapper'>
                 {cartOpened && <Drawer
@@ -108,7 +117,7 @@ function App() {
                 />}
                 {/*если cartOpened true то отображаем*/}
                 <Header onClickCard={() => setCartOpened(true)}/>
-                <Route path='/' exact>
+                <Route exact path='/'>
                     <Home
                         items={items}
                         cartItems={cartItems}
@@ -120,10 +129,10 @@ function App() {
                         isLoading={isLoading}
                     />
                 </Route>
-                <Route path='/favorites' exact>
+                <Route exact path='/favorites'>
                     <Favorites/>
                 </Route>
-                <Route path='/orders' exact>
+                <Route exact path='/orders'>
                     <Orders/>
                 </Route>
             </div>

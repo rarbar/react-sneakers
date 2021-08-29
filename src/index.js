@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import App from './App';
-import {BrowserRouter as Router, Switch} from "react-router-dom";
+import {BrowserRouter, Switch} from "react-router-dom";
+import App from "./App";
 
 
 ReactDOM.render(
-    <Router>
+    <BrowserRouter>
         <Switch>
             <App/>
         </Switch>
-    </Router>,
+    </BrowserRouter>,
     document.getElementById('root')
 );
 

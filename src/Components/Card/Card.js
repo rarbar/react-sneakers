@@ -20,7 +20,7 @@ export function Card({
                      }) {
     const {isItemAdded} = useContext(AppContext)
     const [isFavorite, setIsFavorite] = useState(favorited)
-    const objItem = {id, title, imgUrl, price}
+    const objItem = {id, parentID: id, title, imgUrl, price}
 
     const onClickPlus = () => {
         onPlus(objItem);
@@ -45,11 +45,14 @@ export function Card({
                     <rect x="0" y="170" rx="5" ry="5" width="150" height="15"/>
                     <rect x="0" y="190" rx="5" ry="5" width="90" height="15"/>
                     <rect x="0" y="230" rx="5" ry="5" width="80" height="25"/>
-                    <rect x="118" y="223" rx="10" ry="10" width="32" height="32"/>
+                    <rect x="118" y="223" rx="10" ry="10" width="32"
+                          height="32"/>
                 </ContentLoader> : <>
-                    {onFavorites && (<div className={s.favorite} onClick={onClickFavorite}>
-                        <img src={isFavorite ? heard_liked : unLike} alt="heart"/>
-                    </div>)}
+                    {onFavorites && (
+                        <div className={s.favorite} onClick={onClickFavorite}>
+                            <img src={isFavorite ? heard_liked : unLike}
+                                 alt="heart"/>
+                        </div>)}
                     <img
                         width='100%'
                         height='135'

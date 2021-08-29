@@ -48,8 +48,8 @@ export function Drawer({onClose, items = [], onRemove}) {
                         onClick={onClose}
                     />
                 </h2>
-                {items.length > 0 ?
-                    <>
+                {items.length > 0
+                    ? <>
                         <div className='items'>
                             {items.map((obj) => (
                                 <div key={obj.id}
@@ -89,10 +89,11 @@ export function Drawer({onClose, items = [], onRemove}) {
                                 <img className='arow' src={arrow} alt="arrow"/>
                             </button>
                         </div>
-                    </> : <Info
+                    </>
+                    : <Info
                         title={isComplete ? 'Заказ оформлен' : 'Корзина пуста'}
                         img={isComplete ? check : empty}
-                        description={isComplete ? `Заказ оформлен №${orderId}` : 'Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.'}
+                        description={isComplete ? `Заказ оформлен №${orderId}` : 'Добавьте хотя бы один самокат, чтобы сделать заказ.'}
                     />}
             </div>
         </div>

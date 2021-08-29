@@ -33,7 +33,7 @@ export function Home({   items,
     return (
         <div className="content">
             <div className='search_top'>
-                <h1>{searchValue ? `введите текст:${searchValue}` : 'All sneakers'}</h1>
+                <h1>{searchValue ? `введите текст:${searchValue}` : 'All scooters'}</h1>
                 {'searchValue' &&
                 <img
                     className='clear'

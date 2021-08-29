@@ -19,7 +19,7 @@ export function Header(props) {
                     <img width='80' height='80' src={logo} alt="logo"/>
                 </Link>
                 <div className='headerInfo'>
-                    <h3>React sneakers</h3>
+                    <h3>React scooters</h3>
                     <p>Магазин </p>
 
                 </div>
